@@ -1,49 +1,125 @@
-/*
- Template Name: vacayhome
- File Name: custom.js
- Author Name: ThemeVault
- Author URI: http://www.themevault.net/
- License URI: http://www.themevault.net/license/
- */
+(function () {
 
-$(document).ready(function () {
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {
-            $('#back-to-top').fadeIn();
-        } else {
-            $('#back-to-top').fadeOut();
-        }
-    });
-    $('#back-to-top').click(function () {
-        $("html, body").animate({scrollTop: 0}, 600);
-        return false;
-    });
+	'use strict'
 
-});
 
-$(document).ready(function () {
-    var myButton = $('#mybutton');
-    var userFeed = new Instafeed({
-        get: 'user',
-        userId: '4828631159',
-        accessToken: '4828631159.1677ed0.3e66d0fb39cc4a8383ddd034121c65dc',
-        limit: '6',
-        sortBy: 'most-recent',
-        after: function () {
-            var images = $("#instafeed").find('a');
-            $.each(images, function (index, image) {
-                var delay = (index * 75) + 'ms';
-                $(image).css('-webkit-animation-delay', delay);
-                $(image).css('-moz-animation-delay', delay);
-                $(image).css('-ms-animation-delay', delay);
-                $(image).css('-o-animation-delay', delay);
-                $(image).css('animation-delay', delay);
-                $(image).addClass('animated flipInX');
-            });
+	AOS.init({
+		duration: 800,
+		easing: 'slide',
+		once: true
+	});
 
-        },
-        template: ' <div class="col-md-4 col-sm-4 col-xs-4"><div class="insta-image"><a href="{{link}}" target="_blank"><img src="{{image}}" /><div class="likes">&hearts; {{likes}}</div></a></div></div>'
-    });
-    userFeed.run();
-});
+	var preloader = function() {
 
+		var loader = document.querySelector('.loader');
+		var overlay = document.getElementById('overlayer');
+
+		function fadeOut(el) {
+			el.style.opacity = 1;
+			(function fade() {
+				if ((el.style.opacity -= .1) < 0) {
+					el.style.display = "none";
+				} else {
+					requestAnimationFrame(fade);
+				}
+			})();
+		};
+
+		setTimeout(function() {
+			fadeOut(loader);
+			fadeOut(overlay);
+		}, 200);
+	};
+	preloader();
+	
+
+	var tinySdlier = function() {
+
+		var heroSlider = document.querySelectorAll('.hero-slide');
+		var propertySlider = document.querySelectorAll('.property-slider');
+		var imgPropertySlider = document.querySelectorAll('.img-property-slide');
+		var testimonialSlider = document.querySelectorAll('.testimonial-slider');
+		
+
+		if ( heroSlider.length > 0 ) {
+			var tnsHeroSlider = tns({
+				container: '.hero-slide',
+				mode: 'carousel',
+				speed: 700,
+				autoplay: true,
+				controls: false,
+				nav: false,
+				autoplayButtonOutput: false,
+				controlsContainer: '#hero-nav',
+			});
+		}
+
+
+		if ( imgPropertySlider.length > 0 ) {
+			var tnsPropertyImageSlider = tns({
+				container: '.img-property-slide',
+				mode: 'carousel',
+				speed: 700,
+				items: 1,
+				gutter: 30,
+				autoplay: true,
+				controls: false,
+				nav: true,
+				autoplayButtonOutput: false
+			});
+		}
+
+		if ( propertySlider.length> 0 ) {
+			var tnsSlider = tns({
+				container: '.property-slider',
+				mode: 'carousel',
+				speed: 700,
+				gutter: 30,
+				items: 3,
+				autoplay: true,
+				autoplayButtonOutput: false,
+				controlsContainer: '#property-nav',
+				responsive: {
+					0: {
+						items: 1
+					},
+					700: {
+						items: 2
+					},
+					900: {
+						items: 3
+					}
+				}
+			});
+		}
+
+
+		if ( testimonialSlider.length> 0 ) {
+			var tnsSlider = tns({
+				container: '.testimonial-slider',
+				mode: 'carousel',
+				speed: 700,
+				items: 3,
+				gutter: 50,
+				autoplay: true,
+				autoplayButtonOutput: false,
+				controlsContainer: '#testimonial-nav',
+				responsive: {
+					0: {
+						items: 1
+					},
+					700: {
+						items: 2
+					},
+					900: {
+						items: 3
+					}
+				}
+			});
+		}
+	}
+	tinySdlier();
+
+
+
+})()
