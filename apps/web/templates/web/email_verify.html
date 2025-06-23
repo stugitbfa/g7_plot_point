@@ -1,0 +1,60 @@
+{% extends 'web/auth_base.html' %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block body %}
+<div class="text-center" style="padding:50px 0">
+    <div id="header-logo">
+        Plot<span class="fifth-letter">P</span>oint
+    </div>
+    <div class="logo">login</div>
+
+
+    <!-- Main Form -->
+    <div class="login-form-1">
+        <form action="{% url 'email_verify' %}" method="post" id="login-form" class="text-left">
+            {% csrf_token %}
+            <div class="login-form-main-message">
+               {% if messages %}
+  {% for message in messages %}
+    <div class="alert 
+      {% if message.tags == 'success' %}alert-success
+      {% elif message.tags == 'error' or message.tags == 'danger' %}alert-danger
+      {% elif message.tags == 'warning' %}alert-warning
+      {% else %}alert-info
+      {% endif %} alert-dismissible fade show" role="alert">
+      
+      {{ message }}
+      
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+
+            </div>
+            <div class="main-login-form">
+                <div class="login-group">
+                    <div class="form-group">
+                        <!-- <label for="email" class="sr-only">Username</label> -->
+                        <input type="hidden" class="form-control" id="email" name="email" placeholder="username"
+                            value="{{email}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="otp">Enter OTP</label>
+                        <input type="text" class="form-control" id="otp" name="otp" placeholder="_ _ _ _ _ _">
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-green">Verify</button>
+                    <div class="etc-login-form">
+                        <p>Already Account? <a href="{% url 'login' %}">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- end:Main Form -->
+</div>
+{% endblock %}
