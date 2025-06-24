@@ -1,0 +1,91 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block title %}Property{% endblock %}
+
+{% block body %}
+<div class="container my-4">
+
+  <h5 class="text-center mb-4">
+    {% if customer.user_type == 'owner' %}
+    Welcome, Property Owner
+    {% elif customer.user_type == 'tenant' %}
+    Welcome, Tenant
+    {% endif %}
+  </h5>
+
+  {% if customer.user_type == 'owner' %}
+  <div class="row gy-4">
+    <!-- Left Column -->
+    <div class="col-12 col-md-4">
+      <!-- Property Form -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h4 class="card-title text-center">{% if is_edit %}Edit{% else %}Add{% endif %} Property</h4>
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <hr>
+            <h5>Property Address</h5>
+            {{ address_form.as_p }}
+
+            <button type="submit" name="submit_property" class="btn btn-primary w-100 mt-3">
+              {% if is_edit %}Update{% else %}Add{% endif %} Property
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Image Upload -->
+      {% if property %}
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h5 class="card-title text-center">Upload Property Image</h5>
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ image_form.as_p }}
+            <button type="submit" name="submit_image" class="btn btn-secondary w-100">Upload Image</button>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-12 col-md-8">
+      {% if property %}
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Uploaded Images</h5>
+          <div class="row g-3">
+            {% for img in images %}
+            <div class="col-6 col-sm-6 col-md-4">
+              <div class="border rounded overflow-hidden">
+                <img src="{{ img.image.url }}" class="img-fluid w-100" alt="{{ img.caption }}">
+                <small class="d-block text-muted mt-2">{{ img.caption }}</small>
+              </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+              <p class="text-muted text-center">No images uploaded yet.</p>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="alert alert-warning text-center">
+        No property details found. Please add a property.
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% elif customer.user_type == 'tenant' %}
+  <div class="alert alert-info text-center mt-5">
+    You can explore available rentals and bookings.
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

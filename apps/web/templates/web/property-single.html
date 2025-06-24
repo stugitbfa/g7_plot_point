@@ -1,104 +1,101 @@
 {% extends 'web/base.html' %}
 {% load static %}
-{% block title %}
-Index
-{% endblock %}
+{% block title %}{{ property.title }}{% endblock %}
 
 {% block body %}
-    <div
-      class="hero page-inner overlay"
-      style="background-image: url('images/hero_bg_3.jpg')"
-    >
-      <div class="container">
-        <div class="row justify-content-center align-items-center">
-          <div class="col-lg-9 text-center mt-5">
-            <h1 class="heading" data-aos="fade-up">
-              5232 California AVE. 21BC
-            </h1>
+<div class="container py-4">
 
-            <nav
-              aria-label="breadcrumb"
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-              <ol class="breadcrumb text-center justify-content-center">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item">
-                  <a href="properties.html">Properties</a>
-                </li>
-                <li
-                  class="breadcrumb-item active text-white-50"
-                  aria-current="page"
-                >
-                  5232 California AVE. 21BC
-                </li>
-              </ol>
-            </nav>
-          </div>
+  <!-- Hero Banner -->
+  <div class="bg-light p-4 rounded shadow-sm mb-4 text-center">
+    <h2 class="fw-bold mb-2">{{ property.title }}</h2>
+    <p class="text-muted"><i class="fa fa-rupee-sign me-1 text-primary"></i> ₹{{ property.rent_amount }}</p>
+  </div>
+
+  <!-- Image Gallery -->
+  <div class="row g-3 mb-4">
+    {% for img in images %}
+    <div class="col-6 col-sm-4 col-md-3">
+      <div class="border rounded overflow-hidden">
+        <img src="{{ img.image.url }}" alt="{{ img.caption }}" class="img-fluid w-100">
+        {% if img.caption %}
+        <div class="p-2 bg-white">
+          <small class="text-muted">{{ img.caption }}</small>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center">
+      <p class="text-muted">No images available.</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Property Info & Address -->
+  <div class="row g-4 mb-4">
+    <!-- Property Info -->
+    <div class="col-12 col-md-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="mb-4"><i class="fa fa-home text-primary me-2"></i>Property Details</h5>
+          <ul class="list-unstyled">
+            <li class="mb-2"><i class="fa fa-tag text-secondary me-2"></i><strong>Type:</strong> {{ property.property_type }}</li>
+            <li class="mb-2"><i class="fa fa-bed text-secondary me-2"></i><strong>Bedrooms:</strong> {{ property.bedrooms }}</li>
+            <li class="mb-2"><i class="fa fa-bath text-secondary me-2"></i><strong>Bathrooms:</strong> {{ property.bathrooms }}</li>
+            <li class="mb-2"><i class="fa fa-ruler-combined text-secondary me-2"></i><strong>Area:</strong> {{ property.area_sqft }} sq.ft</li>
+            <li class="mb-2"><i class="fa fa-align-left text-secondary me-2"></i><strong>Description:</strong> {{ property.description }}</li>
+          </ul>
         </div>
       </div>
     </div>
 
-    <div class="section">
-      <div class="container">
-        <div class="row justify-content-between">
-          <div class="col-lg-7">
-            <div class="img-property-slide-wrap">
-              <div class="img-property-slide">
-                <img src="images/img_1.jpg" alt="Image" class="img-fluid" />
-                <img src="images/img_2.jpg" alt="Image" class="img-fluid" />
-                <img src="images/img_3.jpg" alt="Image" class="img-fluid" />
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <h2 class="heading text-primary">5232 California Ave. 21BC</h2>
-            <p class="meta">California, United States</p>
-            <p class="text-black-50">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione
-              laborum quo quos omnis sed magnam id, ducimus saepe, debitis error
-              earum, iste dicta odio est sint dolorem magni animi tenetur.
-            </p>
-            <p class="text-black-50">
-              Perferendis eligendi reprehenderit, assumenda molestias nisi eius
-              iste reiciendis porro tenetur in, repudiandae amet libero.
-              Doloremque, reprehenderit cupiditate error laudantium qui, esse
-              quam debitis, eum cumque perferendis, illum harum expedita.
-            </p>
-
-            <div class="d-block agent-box p-5">
-              <div class="img mb-4">
-                <img
-                  src="images/person_2-min.jpg"
-                  alt="Image"
-                  class="img-fluid"
-                />
-              </div>
-              <div class="text">
-                <h3 class="mb-0">Alicia Huston</h3>
-                <div class="meta mb-3">Real Estate</div>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Ratione laborum quo quos omnis sed magnam id ducimus saepe
-                </p>
-                <ul class="list-unstyled social dark-hover d-flex">
-                  <li class="me-1">
-                    <a href="#"><span class="icon-instagram"></span></a>
-                  </li>
-                  <li class="me-1">
-                    <a href="#"><span class="icon-twitter"></span></a>
-                  </li>
-                  <li class="me-1">
-                    <a href="#"><span class="icon-facebook"></span></a>
-                  </li>
-                  <li class="me-1">
-                    <a href="#"><span class="icon-linkedin"></span></a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+    <!-- Address -->
+    <div class="col-12 col-md-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="mb-4"><i class="fa fa-map-marker-alt text-danger me-2"></i>Address</h5>
+          <ul class="list-unstyled">
+            <li class="mb-2"><i class="fa fa-road text-secondary me-2"></i>{{ address.street }}</li>
+            <li class="mb-2"><i class="fa fa-city text-secondary me-2"></i>{{ address.city }}</li>
+            <li class="mb-2"><i class="fa fa-flag text-secondary me-2"></i>{{ address.state }}</li>
+            <li class="mb-2"><i class="fa fa-envelope-open-text text-secondary me-2"></i>{{ address.pincode }}</li>
+          </ul>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Owner Info -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h5 class="mb-4"><i class="fa fa-user text-dark me-2"></i>Owner Information</h5>
+          <ul class="list-unstyled">
+            <li class="mb-2"><i class="fa fa-user-circle text-secondary me-2"></i><strong>Name:</strong> {{ owner.first_name }} {{ owner.last_name }}</li>
+            <li class="mb-2"><i class="fa fa-envelope text-secondary me-2"></i><strong>Email:</strong> {{ owner.email }}</li>
+            <li class="mb-2"><i class="fa fa-phone text-secondary me-2"></i><strong>Mobile:</strong> {{ owner.mobile }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Button -->
+  <div class="text-center">
+    {% if customer.user_type == 'tenant' %}
+    <form method="post" action="{% url 'send_booking_request' property.id %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-success btn-lg w-100 w-md-auto">
+        <i class="fa fa-calendar-check me-2"></i>Request Booking
+      </button>
+    </form>
+    {% else %}
+    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg w-100 w-md-auto">
+      <i class="fa fa-sign-in-alt me-2"></i>Login to Book
+    </a>
+    {% endif %}
+  </div>
+
+</div>
 {% endblock %}

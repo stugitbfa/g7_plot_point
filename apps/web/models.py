@@ -80,26 +80,21 @@ class Booking(BaseClass):
     def __str__(self):
         return f"{self.tenant} - {self.property}"
     
-class Review(BaseClass):
-    booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
-    rating = models.IntegerField()  # 1 to 5
-    comment = models.TextField(blank=True)
+
+
+class Contact(BaseClass):  # BaseClass should have create_at, update_at, etc.
+    STATUS_CHOICES = [
+        ('new', 'New'),
+        ('read', 'Read'),
+        ('resolved', 'Resolved'),
+        ('archived', 'Archived'),
+    ]
+
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new')
 
     def __str__(self):
-        return f"Review for {self.booking.property.title}"
-
-    
-
-class Payment(BaseClass):
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name='payments')
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_date = models.DateTimeField(auto_now_add=True)
-    payment_mode = models.CharField(max_length=50, default='online')  # online, cash, cheque, etc.
-    status = models.CharField(max_length=50, choices=[
-        ('success', 'Success'),
-        ('failed', 'Failed'),
-        ('pending', 'Pending'),
-    ], default='pending')
-
-    def __str__(self):
-        return f"{self.booking} - {self.amount}"
+        return f"{self.name} - {self.subject}"

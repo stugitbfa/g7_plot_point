@@ -7,126 +7,113 @@ Profile
 
 {% block body %}
 <div class="container">
-    <div class="my-5 row ">
-        <!-- Left Column (Form Card) -->
-        <div class="col-md-4">
-            <div class="card shadow-lg">
-                <div class="card-body p-5">
-                    <h2 class="text-center mb-4">Edit Your Profile</h2>
+  <div class="my-5 row">
+    
+    <!-- Left Column (Profile Form) -->
+    <div class="col-md-4">
+      <div class="card shadow-lg">
+        <div class="card-body p-5">
+          <h2 class="text-center mb-4">Edit Your Profile</h2>
+          <h5><strong>Account Type:</strong> <u>{{ customer.user_type|title }}</u></h5>
 
-                    <h5><strong>Account Type:</strong> <u>{{customer.user_type}}</u></h5>
-
-                    <form action="{% url 'edit_profile' %}" method="post">
-                        {% csrf_token %}
-
-                        <div class="mb-3">
-                            <label for="first_name" class="form-label">First Name</label>
-                            <input type="text" name="first_name" id="first_name" value="{{ customer.first_name|title }}"
-                                class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="last_name" class="form-label">Last Name</label>
-                            <input type="text" name="last_name" id="last_name" value="{{ customer.last_name|title }}"
-                                class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
-                            <input type="email" name="email" id="email" value="{{ customer.email }}"
-                                class="form-control" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="mobile" class="form-label">Mobile Number</label>
-                            <input type="text" name="mobile" id="mobile" value="{{ customer.mobile }}"
-                                class="form-control" required>
-                        </div>
-
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                        </div>
-                    </form>
-                </div>
+          <form action="{% url 'edit_profile' %}" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="first_name" class="form-label">First Name</label>
+              <input type="text" name="first_name" id="first_name" value="{{ customer.first_name|title }}" class="form-control" required>
             </div>
+
+            <div class="mb-3">
+              <label for="last_name" class="form-label">Last Name</label>
+              <input type="text" name="last_name" id="last_name" value="{{ customer.last_name|title }}" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Email Address</label>
+              <input type="email" name="email" id="email" value="{{ customer.email }}" class="form-control" required>
+            </div>
+
+            <div class="mb-4">
+              <label for="mobile" class="form-label">Mobile Number</label>
+              <input type="text" name="mobile" id="mobile" value="{{ customer.mobile }}" class="form-control" required>
+            </div>
+
+            <div class="d-grid gap-3">
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+              <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column (Booking Info) -->
+    <div class="col-md-8">
+      <div class="card shadow mb-4">
+        <div class="card-header {% if customer.user_type == 'tenant' %}bg-info{% else %}bg-primary{% endif %} text-white">
+          {% if customer.user_type == 'tenant' %}
+            <i class="fa fa-book"></i> My Booking Requests
+          {% else %}
+            <i class="fa fa-home"></i> Booking Requests for My Properties
+          {% endif %}
         </div>
 
-        <!-- Right Column (optional content or image) -->
-        <div class="col-md-8">
-            {% if customer.user_type %}
-            <div class="d-flex align-items-center justify-content-center">
-                <div class="accordion w-100" id="accordionExample">
-                    <div class="mb-3 text-center">
-                        <h5>
-                            {% if customer.user_type == 'owner' %}
-                            Welcome, Property Owner
-                            {% elif customer.user_type == 'tenant' %}
-                            Welcome, Tenant
-                            {% endif %}
-                        </h5>
-                    </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Accordion Item #1
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                            data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <strong>This is the first item's accordion body.</strong>
-                                {% if customer.user_type == 'owner' %}
-                                You can view and manage your properties here.
-                                {% elif customer.user_type == 'tenant' %}
-                                You can explore available rentals and bookings.
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingTwo">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Accordion Item #2
-                            </button>
-                        </h2>
-                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                            data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <strong>This is the second item's accordion body.</strong>
-                                Shared content goes here.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingThree">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Accordion Item #3
-                            </button>
-                        </h2>
-                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                            data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <strong>This is the third item's accordion body.</strong>
-                                Additional info can be shown here.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="card-body">
+          {% if customer.user_type == 'tenant' %}
+            {% if tenant_bookings %}
+              <ul class="list-group">
+                {% for booking in tenant_bookings %}
+                  <li class="list-group-item">
+                    <strong>{{ booking.property.title }}</strong><br>
+                    <i class="fa fa-home"></i> Owner: {{ booking.property.owner.first_name }} {{ booking.property.owner.last_name }}<br>
+                    <i class="fa fa-rupee-sign"></i> Rent: ₹{{ booking.property.rent_amount }}<br>
+                    <span class="badge bg-secondary">{{ booking.status|title }}</span><br>
+                    Start Date: {{ booking.start_date }}
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-muted">No bookings made yet.</p>
             {% endif %}
+          
+          {% else %}
+            {% if owner_bookings %}
+              <ul class="list-group">
+                {% for booking in owner_bookings %}
+                  <li class="list-group-item">
+                    <strong>{{ booking.property.title }}</strong><br>
+                    <i class="fa fa-user"></i> Tenant: {{ booking.tenant.first_name|title }} {{ booking.tenant.last_name|title }}<br>
+                    <i class="fa fa-phone"></i> Mobile: {{ booking.tenant.mobile }}<br>
+                    <p>Status:
+                      <span class="badge bg-warning text-dark">{{ booking.status|title }}</span>
+                    </p>
+                    <p>Start Date: {{ booking.start_date }}</p>
+
+                    <!-- Status Update Form -->
+                    <form method="post" action="{% url 'update_booking_status' booking.id %}">
+                      {% csrf_token %}
+                      <div class="input-group mb-2">
+                        <select name="status" class="form-select">
+                          <option value="pending" {% if booking.status == 'pending' %}selected{% endif %}>Pending</option>
+                          <option value="approved" {% if booking.status == 'approved' %}selected{% endif %}>Approved</option>
+                          <option value="rejected" {% if booking.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                          <option value="cancelled" {% if booking.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                          <option value="completed" {% if booking.status == 'completed' %}selected{% endif %}>Completed</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-success">Update</button>
+                      </div>
+                    </form>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-muted">No one has booked your properties yet.</p>
+            {% endif %}
+          {% endif %}
         </div>
-
-
+      </div>
     </div>
 
-    <div class="d-flex justify-content-center">
-        <a href="{% url 'logout' %}" class="btn btn-danger mb-3">Logout</a>
-    </div>
+  </div>
 </div>
 {% endblock %}

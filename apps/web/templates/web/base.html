@@ -22,6 +22,10 @@
   <link rel="stylesheet" href="{% static 'web/css/aos.css' %}" />
   <link rel="stylesheet" href="{% static 'web/css/style.css' %}" />
 
+  <!-- Font Awesome CDN -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+
   <title>
     {% block title %} {% endblock %} | PlotPoint
   </title>
@@ -32,6 +36,10 @@
       font-size: 48px;
       color: white;
     }
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
   </style>
 </head>
 
@@ -41,33 +49,16 @@
       <a class="navbar-brand fw-bold" href="{% url 'index' %}">
         <span class="first-letter">P</span>lot<span class="fifth-letter">P</span>oint
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon text-white" style="color: white;"></span>
       </button>
 
       <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link text-white {% if request.path == '/' %}active{% endif %}" href="{% url 'index' %}">Home</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link text-white dropdown-toggle {% if request.path == '/properties/' %}active{% endif %}" href="#"
-              id="propertiesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Properties
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="propertiesDropdown">
-              <li><a class="dropdown-item" href="#">Buy Property</a></li>
-              <li><a class="dropdown-item" href="#">Sell Property</a></li>
-              <li>
-                <a class="dropdown-item dropdown-toggle" href="#">Dropdown</a>
-                <ul class="dropdown-menu dropdown-submenu">
-                  <li><a class="dropdown-item" href="#">Sub Menu One</a></li>
-                  <li><a class="dropdown-item" href="#">Sub Menu Two</a></li>
-                  <li><a class="dropdown-item" href="#">Sub Menu Three</a></li>
-                </ul>
-              </li>
-            </ul>
+            <a class="nav-link text-white {% if request.path == '/' %}active{% endif %}"
+              href="{% url 'index' %}">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-white" href="{% url 'services' %}">Services</a>
@@ -78,28 +69,48 @@
           <li class="nav-item">
             <a class="nav-link text-white" href="{% url 'contact' %}">Contact Us</a>
           </li>
+          {% if request.session.customer_id %}
+          <li class="nav-item dropdown">
+            <a class="nav-link text-white dropdown-toggle {% if request.path == '/properties/' %}active{% endif %}"
+              href="#" id="propertiesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Properties
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="propertiesDropdown">
+              <li><a class="dropdown-item" href="{% url 'properties' %}">Properties</a></li>
+              <li><a class="dropdown-item" href="{% url 'owner_property' %}">Property detail</a></li>
+            </ul>
+          </li>
           <li class="nav-item">
             <a class="nav-link text-white" href="{% url 'profile' %}"><span class="icon-user me-1"></span></a>
           </li>
+          {% else %}
+          <!-- Guest User -->
+          <li class="nav-item px-3 px-xl-4">
+            <a class="nav-link fw-medium" href="{% url 'login' %}">Login</a>
+          </li>
+          <li class="nav-item px-3 px-xl-4">
+            <a class="nav-link fw-medium" href="{% url 'signup' %}">Register</a>
+          </li>
+          {% endif %}
         </ul>
       </div>
     </div>
   </nav>
-{% if messages %}
+  {% if messages %}
   {% for message in messages %}
-    <div class="alert 
+  <div class="alert 
       {% if message.tags == 'success' %}alert-success
       {% elif message.tags == 'error' or message.tags == 'danger' %}alert-danger
       {% elif message.tags == 'warning' %}alert-warning
       {% else %}alert-info
       {% endif %} alert-dismissible fade show" role="alert">
-      
-      {{ message }}
-      
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+
+    {{ message }}
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
   {% endfor %}
-{% endif %}
+  {% endif %}
 
 
   {% block body %}
